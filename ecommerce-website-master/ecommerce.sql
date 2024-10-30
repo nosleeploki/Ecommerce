@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.2
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 25, 2019 at 05:04 PM
--- Server version: 10.1.34-MariaDB
--- PHP Version: 7.2.7
+-- Generation Time: Oct 30, 2024 at 09:31 AM
+-- Server version: 10.4.25-MariaDB
+-- PHP Version: 7.4.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -31,30 +30,59 @@ SET time_zone = "+00:00";
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `name` varchar(30) DEFAULT NULL,
-  `price` int(20) NOT NULL
+  `price` int(20) NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `brand` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `name`, `price`, `image`) VALUES
-(1, 'Guess 1875', 3000),
-(2, 'Guest Watch', 2500),
-(3, 'Panerai Watch', 3500),
-(4, 'Nonos Watch', 1800),
-(5, 'Levis', 1800),
-(6, 'louis philippe t-shirt', 2500),
-(7, 'Highlander t-shirt', 500),
-(8, 'GUCCI White t-Shirt', 2300),
-(9, 'Nike White Sneaker', 8000),
-(10, 'Nike White Shoes', 7500),
-(11, 'Nike Yellow Sneaker', 7000),
-(12, 'Nike Brown Sneaker', 6000),
-(13, 'Beats Headphone', 22500),
-(14, 'Zolo Headphone', 4500),
-(15, 'Sony Speaker', 10500),
-(16, 'Airpods', 15000);
+INSERT INTO `products` (`id`, `name`, `price`, `image`, `brand`) VALUES
+(1, 'Cân điện tử SF400', 97000, 'sf400.jpg', 'dungcu'),
+(2, 'Bàn xoay', 250000, 'banxoay.jpg', 'dungcu'),
+(3, 'Bột làm bánh', 350000, 'botlambanh.jpg', 'nguyenlieu'),
+(18, 'Bột mì đa dụng', 50000, 'botmi.jpg', 'nguyenlieu'),
+(19, 'Đường kính', 30000, 'duongkinh.jpg', 'nguyenlieu'),
+(20, 'Bơ nhạt', 60000, 'bonhat.jpg', 'nguyenlieu'),
+(21, 'Sữa tươi', 20000, 'suatươi.jpg', 'phache'),
+(22, 'Trứng gà', 15000, 'trunggà.jpg', 'nguyenlieu'),
+(23, 'Bột nở', 20000, 'botno.jpg', 'nguyenlieu'),
+(24, 'Vanilla', 25000, 'vanilla.jpg', 'phache'),
+(25, 'Socola đen', 70000, 'socola_den.jpg', 'phache'),
+(26, 'Hạnh nhân', 80000, 'hanhnhan.jpg', 'nguyenlieu'),
+(27, 'Nho khô', 35000, 'nhokho.jpg', 'phache'),
+(28, 'Khuôn bánh tròn', 120000, 'kuon_banh.jpg', 'dungcu'),
+(29, 'Cân điện tử', 80000, 'can_dientu.jpg', 'dungcu'),
+(30, 'Bàn xoay', 250000, 'ban_xoay.jpg', 'dungcu'),
+(31, 'Phới lồng', 15000, 'phoilong.jpg', 'dungcu'),
+(32, 'Máy đánh trứng', 500000, 'may_danh_trung.jpg', 'dungcu'),
+(33, 'Thìa đong', 10000, 'thiadong.jpg', 'dungcu'),
+(34, 'Dao cắt bánh', 30000, 'dao_cat_banh.jpg', 'dungcu'),
+(35, 'Khay nướng', 70000, 'khay_nuong.jpg', 'dungcu'),
+(36, 'Bộ dụng cụ trang trí bánh', 200000, 'dungcu_trangtri.jpg', 'trangtri'),
+(37, 'Nhiệt kế lò nướng', 60000, 'nhietke.jpg', 'dungcu'),
+(38, 'Kem tươi', 40000, 'kem_tươi.jpg', 'phache'),
+(39, 'Socola trang trí', 50000, 'socola_trangtri.jpg', 'trangtri'),
+(40, 'Đường bột', 20000, 'duong_bot.jpg', ''),
+(41, 'Trái cây tươi', 30000, 'traicay.jpg', ''),
+(42, 'Hạt dẻ cười', 60000, 'hat_de_cuoi.jpg', ''),
+(43, 'Kẹo màu', 15000, 'keo_mau.jpg', ''),
+(44, 'Bột màu thực phẩm', 25000, 'bot_mau.jpg', ''),
+(45, 'Nến sinh nhật', 10000, 'nen_sinhnhat.jpg', ''),
+(46, 'Giấy ăn trang trí', 20000, 'giay_an.jpg', ''),
+(47, 'Ruy băng', 30000, 'ruy_bang.jpg', ''),
+(48, 'Máy xay sinh tố', 300000, 'may_xay.jpg', ''),
+(49, 'Bình đong', 15000, 'binh_dong.jpg', ''),
+(50, 'Thìa khuấy', 10000, 'thia_khuay.jpg', ''),
+(51, 'Cốc đo', 20000, 'coc_do.jpg', ''),
+(52, 'Bát trộn', 25000, 'bat_tron.jpg', ''),
+(53, 'Máy trộn bột', 600000, 'may_tron_bot.jpg', ''),
+(54, 'Mũi khoan trộn', 30000, 'mui_khoan.jpg', ''),
+(55, 'Cây cán bột', 20000, 'cay_can.jpg', ''),
+(56, 'Bộ lọc bột', 15000, 'bo_loc_bot.jpg', ''),
+(57, 'Bộ ly đo lường', 25000, 'ly_do.jpg', '');
 
 -- --------------------------------------------------------
 
@@ -68,18 +96,20 @@ CREATE TABLE `users` (
   `first_name` varchar(20) NOT NULL,
   `last_name` varchar(20) DEFAULT NULL,
   `phone` int(10) NOT NULL,
-  `registration_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `password` varchar(255) NOT NULL
+  `registration_time` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `password` varchar(255) NOT NULL,
+  `role` enum('admin','user') NOT NULL DEFAULT 'user'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `email_id`, `first_name`, `last_name`, `phone`, `registration_time`, `password`) VALUES
-(65, 'sharew5m123@gmail.com', 'reys', 'rudt', 0, '2019-03-18 13:46:33', 'e4f194cba29960e12d8b8f1bfedc972b'),
-(66, 'sgah234@gmail.com', 'werty', 'erty', 0, '2019-03-18 13:55:46', 'e10adc3949ba59abbe56e057f20f883e'),
-(67, 'sham1234@gmail.com', 'Sham', 'das', 0, '2019-03-19 07:37:46', 'e10adc3949ba59abbe56e057f20f883e');
+INSERT INTO `users` (`id`, `email_id`, `first_name`, `last_name`, `phone`, `registration_time`, `password`, `role`) VALUES
+(67, '1@GMAIL.COM', 'Sham', 'das', 0, '2024-10-30 06:27:14', '1', 'admin'),
+(68, 'trunghttq1@gmail.com', 'Trung', 'Nguyễn Bảo', 0, '2024-10-15 16:56:14', 'c4ca4238a0b923820dcc509a6f75849b', 'user'),
+(69, '2@gmail.com', '2', '2', 0, '2024-10-16 15:00:49', 'c81e728d9d4c2f636f067f89cc14862c', 'user'),
+(70, '3@gmail.com', '1', '1', 0, '2024-10-30 06:29:04', 'c4ca4238a0b923820dcc509a6f75849b', 'admin');
 
 -- --------------------------------------------------------
 
@@ -91,22 +121,17 @@ CREATE TABLE `users_products` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
   `item_id` int(11) DEFAULT NULL,
-  `status` enum('Added To Cart','Confirmed') NOT NULL
+  `status` enum('Added To Cart','Confirmed') NOT NULL,
+  `quantity` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users_products`
 --
 
-INSERT INTO `users_products` (`id`, `user_id`, `item_id`, `status`) VALUES
-(11, 67, 6, 'Confirmed'),
-(17, 67, 1, 'Confirmed'),
-(18, 67, 5, 'Confirmed'),
-(19, 67, 6, 'Confirmed'),
-(20, 67, 1, 'Confirmed'),
-(23, 67, 1, 'Confirmed'),
-(24, 67, 2, 'Confirmed'),
-(25, 67, 9, 'Confirmed');
+INSERT INTO `users_products` (`id`, `user_id`, `item_id`, `status`, `quantity`) VALUES
+(59, 69, 21, 'Added To Cart', 1),
+(60, 69, 2, 'Added To Cart', 1);
 
 --
 -- Indexes for dumped tables
@@ -140,19 +165,19 @@ ALTER TABLE `users_products`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=68;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 
 --
 -- AUTO_INCREMENT for table `users_products`
 --
 ALTER TABLE `users_products`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
 
 --
 -- Constraints for dumped tables

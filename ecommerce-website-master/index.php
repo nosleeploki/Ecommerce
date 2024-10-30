@@ -41,7 +41,7 @@ include 'includes/check-if-added.php';
  <div class="container pt-3">
         <div class="row text-center ">
             <div class="col-6 col-md-3 py-3">
-                <a href="products.php#watch"> <img src="images/banxoay.jpg" class="img-fluid " alt="" style="border-radius:0.5rem">
+                <a href="category-material.php"> <img src="images/banxoay.jpg" class="img-fluid " alt="" style="border-radius:0.5rem">
                 <!-- https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fm=jpg&w=400&fit=max-->
                     <div class="h5 pt-3 font-weight-bolder">
                       Dụng cụ
@@ -49,7 +49,7 @@ include 'includes/check-if-added.php';
                  </a>
              </div>
             <div class="col-6 col-md-3 py-3 " >
-                <a href="products.php#shirt"  >
+                <a href="botlambanh.php"  >
                   <img src="images/botbanhngucoc.jpg" class="img-fluid zoom" alt="" style="border-radius:0.5rem" >
                      <div class="h5 pt-3 font-weight-bolder">
                         Bột làm bánh
@@ -57,7 +57,7 @@ include 'includes/check-if-added.php';
                   </a>
              </div>
             <div class="col-6 col-md-3 py-3">
-                <a href="products.php#shoes">
+                <a href="trangtri.php">
                  <img src="images/phukien1.jpg" class="img-fluid   " alt="" style="border-radius:0.5rem">
                 <div class="h5 pt-3 font-weight-bolder">
                     Phụ kiện trang trí
@@ -65,7 +65,7 @@ include 'includes/check-if-added.php';
              </a>
              </div>
             <div class="col-6 col-md-3 py-3">
-                <a href="products.php#headphones">
+                <a href="nguyenlieu.php">
                  <img src="images/nguyenlieu.jpg" class="img-fluid  " alt="" style="border-radius:0.5rem">
                  <div class="h5 pt-3 font-weight-bolder">
                     Nguyên liệu pha chế

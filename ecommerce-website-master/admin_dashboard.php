@@ -73,6 +73,7 @@ $products = mysqli_fetch_all($result_products, MYSQLI_ASSOC);
                             <td><?php echo $product['id']; ?></td>
                             <td><?php echo $product['name']; ?></td>
                             <td><?php echo number_format($product['price'], 2); ?> VND</td>
+                            <td><?php echo $product['brand']; ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>

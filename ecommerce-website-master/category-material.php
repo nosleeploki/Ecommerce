@@ -2,22 +2,10 @@
 session_start();
 require("includes/common.php"); // Kết nối cơ sở dữ liệu
 
-// Thiết lập số sản phẩm trên mỗi trang
-$limit = 12;
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
-$offset = ($page - 1) * $limit;
-
-// Lấy danh sách sản phẩm từ cơ sở dữ liệu với phân trang
+// Lấy danh sách sản phẩm từ cơ sở dữ liệu
 $category = isset($_GET['category']) ? $_GET['category'] : '';
-$query = "SELECT * FROM products" . ($category ? " WHERE category = '$category'" : "") . " LIMIT $limit OFFSET $offset";
+$query = "SELECT DISTINCT brand, id, name, price, image FROM products WHERE brand = 'nguyenlieu'" . ($category ? " AND category = '$category'" : ""); // Thay 'products' bằng tên bảng của bạn
 $result = mysqli_query($con, $query);
-
-// Lấy tổng số sản phẩm để tính số trang
-$total_query = "SELECT COUNT(*) as total FROM products" . ($category ? " WHERE category = '$category'" : "");
-$total_result = mysqli_query($con, $total_query);
-$total_row = mysqli_fetch_assoc($total_result);
-$total_products = $total_row['total'];
-$total_pages = ceil($total_products / $limit);
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +40,8 @@ include 'includes/check-if-added.php';
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
+            <li class="breadcrumb-item"><a href="products.php">Sản phẩm</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Nguyên liệu</li>
         </ol>
     </nav>
     <!--breadcrumb end-->
@@ -83,31 +72,7 @@ include 'includes/check-if-added.php';
         <?php } ?>
     </div>
     <!--menu list ends-->
-
-    <!-- Phân trang -->
-    <nav aria-label="Page navigation">
-        <ul class="pagination justify-content-center">
-            <?php if ($page > 1) { ?>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $page - 1; ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-            <?php } ?>
-            <?php for ($i = 1; $i <= $total_pages; $i++) { ?>
-                <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
-                    <a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php } ?>
-            <?php if ($page < $total_pages) { ?>
-                <li class="page-item">
-                    <a class="page-link" href="?page=<?php echo $page + 1; ?>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            <?php } ?>
-        </ul>
-    </nav>
+    
 </div>
  <!-- footer-->
  <?php include 'includes/footer.php' ?>

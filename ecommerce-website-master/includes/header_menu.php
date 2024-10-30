@@ -14,14 +14,17 @@
                                Sản phẩm
                             </a>
                                <div class="dropdown-menu">
-                                   <a href="products.php#dungcu" class="dropdown-item">Dụng cụ làm bánh</a>
-                                   <a href="products.php#shirt" class="dropdown-item">Bột làm bánh Mama's Choice</a>
-                                   <a href="products.php#shoes" class="dropdown-item">Bột làm bánh Trộn sẵn Fancy's</a>
-                                   <a href="products.php#headphones" class="dropdown-item">Hàng mới cập nhật</a>
+                                   <a href="category-material.php" class="dropdown-item">Nguyên liệu làm bánh</a>
+                                   <a href="category-decorate.php" class="dropdown-item">Trang trí</a>
+                                   <a href="category-ingredients.php" class="dropdown-item">Pha chế</a>
+                                   <a href="category-tool.php" class="dropdown-item">Dụng cụ</a>
                                </div>
                            
                        </li>
-                       <li class="nav-item"><a href="index.php" class="nav-link">Hot Sale</a></li>
+
+                       <!-- Sale chưa thêm ! -->
+                       <!-- <li class="nav-item"><a href="index.php" class="nav-link">Hot Sale</a></li>  -->
+                      
                        <li class="nav-item"><a href="about.php" class="nav-link">About us</a></li>
                        <?php
                        if (isset($_SESSION['email'])) {
