@@ -41,23 +41,23 @@ include 'includes/check-if-added.php';
  <div class="container pt-3">
         <div class="row text-center ">
             <div class="col-6 col-md-3 py-3">
-                <a href="category-material.php"> <img src="images/banxoay.jpg" class="img-fluid " alt="" style="border-radius:0.5rem">
+                <a href="category-material.php"> <img src="images/botlambanh.jpg" class="img-fluid " alt="" style="border-radius:0.5rem">
                 <!-- https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fm=jpg&w=400&fit=max-->
                     <div class="h5 pt-3 font-weight-bolder">
-                      Dụng cụ
+                      Nguyên liệu
                    </div>
                  </a>
              </div>
             <div class="col-6 col-md-3 py-3 " >
-                <a href="botlambanh.php"  >
-                  <img src="images/botbanhngucoc.jpg" class="img-fluid zoom" alt="" style="border-radius:0.5rem" >
+                <a href="category-tool.php"  >
+                  <img src="images/sf400.jpg" class="img-fluid zoom" alt="" style="border-radius:0.5rem" >
                      <div class="h5 pt-3 font-weight-bolder">
-                        Bột làm bánh
+                        Dụng cụ
                      </div>
                   </a>
              </div>
             <div class="col-6 col-md-3 py-3">
-                <a href="trangtri.php">
+                <a href="category-decorate.php">
                  <img src="images/phukien1.jpg" class="img-fluid   " alt="" style="border-radius:0.5rem">
                 <div class="h5 pt-3 font-weight-bolder">
                     Phụ kiện trang trí
@@ -65,10 +65,10 @@ include 'includes/check-if-added.php';
              </a>
              </div>
             <div class="col-6 col-md-3 py-3">
-                <a href="nguyenlieu.php">
-                 <img src="images/nguyenlieu.jpg" class="img-fluid  " alt="" style="border-radius:0.5rem">
+                <a href="category-ingredients.php">
+                 <img src="images/cadong.jpg" class="img-fluid  " alt="" style="border-radius:0.5rem">
                  <div class="h5 pt-3 font-weight-bolder">
-                    Nguyên liệu pha chế
+                    Pha chế
                  </div>
               </div>
             </a>
