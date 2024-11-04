@@ -27,10 +27,10 @@ if ($num != 0) {
     $quer = "INSERT INTO users(email_id,first_name,last_name,password) values('$email','$first','$last','$pass')";
     mysqli_query($con, $quer);
 
-    echo "New record has id: " . mysqli_insert_id($con);
-    $user_id = mysqli_insert_id($con);
-    $_SESSION['email'] = $email;
-    $_SESSION['user_id'] = $user_id;
-    header('location:products.php');
+    // Đặt thông báo đăng ký thành công
+    $_SESSION['success_message'] = "Đăng ký thành công! Chào mừng bạn đến với Baker's Mart.";
+    header('location: products.php');
+
 }
 ?>
+

@@ -12,6 +12,7 @@ if (!isset($_SESSION['email']) || $_SESSION['role'] != 'admin') {
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $productName = mysqli_real_escape_string($con, $_POST['product_name']);
     $productPrice = mysqli_real_escape_string($con, $_POST['product_price']);
+    $productBrand = mysqli_real_escape_string($con, $_POST['product_brand']);
     $productImage = $_FILES['product_image']['name'];
 
     // Xử lý upload hình ảnh
@@ -20,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     move_uploaded_file($_FILES['product_image']['tmp_name'], $targetFile);
 
     // Thêm sản phẩm vào cơ sở dữ liệu
-    $query = "INSERT INTO products (name, price, image) VALUES ('$productName', '$productPrice', '$productImage')";
+    $query = "INSERT INTO products (name, price, image, brand) VALUES ('$productName', '$productPrice', '$productImage', '$productBrand')";
     mysqli_query($con, $query);
 
     // Chuyển hướng về trang quản lý sản phẩm hoặc thông báo thành công
@@ -48,6 +49,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <div class="form-group">
             <label for="product_price">Giá:</label>
             <input type="number" class="form-control" id="product_price" name="product_price" required>
+        </div>
+        <div class="form-group">
+            <label for="product_image">Loại sản phẩm:</label>
+            <input type="text" class="form-control" id="product_brand" name="product_brand" required>
         </div>
         <div class="form-group">
             <label for="product_image">Hình Ảnh:</label>

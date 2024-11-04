@@ -14,7 +14,7 @@ $result = mysqli_query($con, $query);
 $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
 // Lấy danh sách sản phẩm
-$query_products = "SELECT id, name, price FROM products";
+$query_products = "SELECT id, name, price, brand FROM products";
 $result_products = mysqli_query($con, $query_products);
 $products = mysqli_fetch_all($result_products, MYSQLI_ASSOC);
 ?>
@@ -58,27 +58,36 @@ $products = mysqli_fetch_all($result_products, MYSQLI_ASSOC);
         </section>
 
         <section>
-            <h2>Quản Lý Sản Phẩm</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Tên Sản Phẩm</th>
-                        <th>Giá</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($products as $product): ?>
-                        <tr>
-                            <td><?php echo $product['id']; ?></td>
-                            <td><?php echo $product['name']; ?></td>
-                            <td><?php echo number_format($product['price'], 2); ?> VND</td>
-                            <td><?php echo $product['brand']; ?></td>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </section>
+    <h2>Quản Lý Sản Phẩm</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Giá</th>
+                <th>Loại sản phẩm</th>
+                <th>Hành động</th> <!-- Cột hành động -->
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($products as $product): ?>
+                <tr>
+                    <td><?php echo $product['id']; ?></td>
+                    <td><?php echo $product['name']; ?></td>
+                    <td><?php echo number_format($product['price'], 2); ?> VND</td>
+                    <td><?php echo $product['brand']; ?></td>
+                    <td>
+                        <form action="delete_product.php" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                            <button type="submit">Xóa</button>
+                        </form>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</section>
+
     </main>
 
     <footer>

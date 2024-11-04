@@ -12,7 +12,41 @@ session_start();
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" >
     <link href='https://fonts.googleapis.com/css?family=Delius Swash Caps' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Andika' rel='stylesheet'>
+    <link rel="stylesheet" href="path/to/your/bootstrap.css">
+    <link rel="stylesheet" href="path/to/your/styles.css">
     <link rel="stylesheet" href="style.css">
+    <!--css thanh cuộn-->
+    <style>
+           .navbar {
+    position: fixed; /* Giữ thanh điều hướng cố định */
+    top: 0; /* Đặt ở trên cùng */
+    width: 100%; /* Chiếm toàn bộ chiều rộng */
+    z-index: 1000; /* Đảm bảo nó nằm trên các phần tử khác */
+    transition: all 0.3s ease; /* Hiệu ứng chuyển tiếp */
+}
+
+.navbar.DesktopHeader_isMinimised__sD95R {
+    background-color: rgba(255, 255, 255, 0.8); /* Màu nền khi rút gọn */
+    padding: 10px 0; /* Giảm khoảng cách trên và dưới */
+}
+
+.navbar .navbar-brand {
+    font-size: 1.5rem; /* Kích thước chữ lớn hơn khi bình thường */
+    transition: font-size 0.3s ease;
+}
+
+.navbar.DesktopHeader_isMinimised__sD95R .navbar-brand {
+    font-size: 1.2rem; /* Kích thước chữ nhỏ hơn khi rút gọn */
+}
+
+/* Đối với thiết bị di động */
+@media (max-width: 768px) {
+    .navbar {
+        padding: 10px; /* Padding cho thiết bị di động */
+    }
+}
+
+    </style>
 </head>
 <body style="margin-bottom:200px">
     <!--Header-->
@@ -42,7 +76,7 @@ include 'includes/check-if-added.php';
         <div class="row text-center ">
             <div class="col-6 col-md-3 py-3">
                 <a href="category-material.php"> <img src="images/botlambanh.jpg" class="img-fluid " alt="" style="border-radius:0.5rem">
-                <!-- https://images.unsplash.com/photo-1523170335258-f5ed11844a49?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fm=jpg&w=400&fit=max-->
+                
                     <div class="h5 pt-3 font-weight-bolder">
                       Nguyên liệu
                    </div>
@@ -119,3 +153,22 @@ $('#login').modal('show');
 
 
 </html>
+
+<!-- script thanh cuộn -->
+<script>
+$(document).ready(function() {
+    var navbar = $('.navbar'); // Chọn thanh điều hướng
+    var originalOffsetY = navbar.offset().top; // Lấy vị trí ban đầu của thanh điều hướng
+
+    function scroll() {
+        if ($(window).scrollTop() > originalOffsetY) {
+            navbar.addClass('DesktopHeader_isMinimised__sD95R'); // Thêm lớp khi cuộn xuống
+        } else {
+            navbar.removeClass('DesktopHeader_isMinimised__sD95R'); // Xóa lớp khi cuộn lên
+        }
+    }
+
+    document.addEventListener('scroll', scroll); // Lắng nghe sự kiện cuộn
+});
+</script>
+

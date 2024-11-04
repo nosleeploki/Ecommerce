@@ -1,62 +1,45 @@
-
-
 <!--Navigation bar start-->
-<nav class="navbar fixed-top navbar-expand-sm navbar-dark" style="background-color:rgba(0,0,0,0.5)">
-            <div class="container">
-                    <a href="index.php" class="navbar-brand" style="font-family: 'Delius Swash Caps'">Baker's Mart</a>
-                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mynavbar">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                <div class="collapse navbar-collapse" id="mynavbar">
-                    <ul class="nav navbar-nav">
-                       <li class="nav-item dropdown">
-                           <a href="" class="nav-link dropdown-toggle" id="navbar-drop" data-toggle="dropdown">
-                               Sản phẩm
-                            </a>
-                               <div class="dropdown-menu">
-                                   <a href="category-material.php" class="dropdown-item">Nguyên liệu làm bánh</a>
-                                   <a href="category-decorate.php" class="dropdown-item">Trang trí</a>
-                                   <a href="category-ingredients.php" class="dropdown-item">Pha chế</a>
-                                   <a href="category-tool.php" class="dropdown-item">Dụng cụ</a>
-                               </div>
-                           
-                       </li>
-
-                       <!-- Sale chưa thêm ! -->
-                       <!-- <li class="nav-item"><a href="index.php" class="nav-link">Hot Sale</a></li>  -->
-                      
-                       <li class="nav-item"><a href="about.php" class="nav-link">About us</a></li>
-                       <?php
-                       if (isset($_SESSION['email'])) {
-                        ?>
-                       <li class="nav-item"><a href="cart.php" class="nav-link">Giỏ hàng</a></li>
-                       <?php
-                          } 
-                    ?>
-                    </ul>
-                    
-                    <?php
-                if (isset($_SESSION['email'])) {
-                    ?>
-                    <ul class="nav navbar-nav ml-auto">
-                       <li class="nav-item"><a href="logout_script.php" class="nav-link"><i class="fa fa-sign-out"></i>Đăng xuất</a></li>
-                       <li class="nav-item"><a  class="nav-link " data-placement="bottom" data-toggle="popover" data-trigger="hover" data-content="<?php echo $_SESSION['email'] ?>"><i class="fa fa-user-circle "></i></a></li>
-                    </ul>
-                    <?php
-                } else {
-                    ?>
-                    <ul class="nav navbar-nav ml-auto">
-                       <li class="nav-item "><a href="#signup" class="nav-link"data-toggle="modal" ><i class="fa fa-user"></i> Đăng ký</a></li>
-                       <li class="nav-item "><a href="#login" class="nav-link" data-toggle="modal"><i class="fa fa-sign-in"></i> Đăng nhập</a></li>
-                    </ul>
-                    <?php 
-                }
-                    ?>
+<nav class="navbar fixed-top navbar-expand-sm navbar-dark" id="navbar" style="background-color:rgba(0,0,0,0.5)">
+    <div class="container">
+        <a href="index.php" class="navbar-brand" style="font-family: 'Delius Swash Caps'">Baker's Mart</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mynavbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="mynavbar">
+            <ul class="nav navbar-nav">
+                <li class="nav-item dropdown">
+                    <a href="" class="nav-link dropdown-toggle" id="navbar-drop" data-toggle="dropdown">
+                        Sản phẩm
+                    </a>
+                    <div class="dropdown-menu" id="myDropdown">
+                        <a href="category-material.php" class="dropdown-item">Nguyên liệu làm bánh</a>
+                        <a href="category-decorate.php" class="dropdown-item">Trang trí</a>
+                        <a href="category-ingredients.php" class="dropdown-item">Pha chế</a>
+                        <a href="category-tool.php" class="dropdown-item">Dụng cụ</a>
                     </div>
-                </div>
-            </div>
-        </nav>
-    <!--navigation bar end-->
+                </li>
+                <li class="nav-item"><a href="about.php" class="nav-link">About us</a></li>
+                <?php if (isset($_SESSION['email'])) { ?>
+                    <li class="nav-item"><a href="cart.php" class="nav-link">Giỏ hàng</a></li>
+                <?php } ?>
+            </ul>
+
+            <?php if (isset($_SESSION['email'])) { ?>
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item"><a href="logout_script.php" class="nav-link"><i class="fa fa-sign-out"></i>Đăng xuất</a></li>
+                    <li class="nav-item"><a class="nav-link" data-placement="bottom" data-toggle="popover" data-trigger="hover" data-content="<?php echo $_SESSION['email'] ?>"><i class="fa fa-user-circle"></i></a></li>
+                </ul>
+            <?php } else { ?>
+                <ul class="nav navbar-nav ml-auto">
+                    <li class="nav-item"><a href="#signup" class="nav-link" data-toggle="modal"><i class="fa fa-user"></i> Đăng ký</a></li>
+                    <li class="nav-item"><a href="#login" class="nav-link" data-toggle="modal"><i class="fa fa-sign-in"></i> Đăng nhập</a></li>
+                </ul>
+            <?php } ?>
+        </div>
+    </div>
+</nav>
+<!--navigation bar end-->
+
     <!--Login trigger Modal-->
     <div class="modal fade" id="login" >
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -145,3 +128,6 @@
         </div>
       </div>
       <!--Signup trigger model ends-->
+      
+
+
