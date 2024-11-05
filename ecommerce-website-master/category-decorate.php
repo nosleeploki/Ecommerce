@@ -20,6 +20,14 @@ $result = mysqli_query($con, $query);
     <link href='https://fonts.googleapis.com/css?family=Delius Swash Caps' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Andika' rel='stylesheet'>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* Thêm CSS tùy chỉnh ở đây nếu cần */
+        .product-image {
+            height: 200px; /* Thay đổi chiều cao theo ý muốn */
+            object-fit: cover; /* Đảm bảo ảnh không bị biến dạng */
+            width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của thẻ cha */
+        }
+    </style>
 </head>
 <body>
 <!--header -->
@@ -50,27 +58,27 @@ include 'includes/check-if-added.php';
     
     <!--menu list-->
     <div class="row text-center" id="products">
-        <?php while ($row = mysqli_fetch_assoc($result)) { ?>
-            <div class="col-md-3 col-6 py-2">
-                <div class="card">
-                    <img src="images/<?php echo $row['image']; ?>" alt="" class="img-fluid pb-1">
-                    <div class="figure-caption">
-                        <h6><?php echo $row['name']; ?></h6>
-                        <h6>Giá: <?php echo number_format($row['price'], 0, ',', '.'); ?>₫</h6>
-                        <?php if (!isset($_SESSION['email'])) { ?>
-                            <p><a href="index.php#login" role="button" class="btn btn-warning text-white">Thêm vào giỏ hàng</a></p>
-                        <?php } else {
-                            if (check_if_added_to_cart($row['id'])) {
-                                echo '<p><a href="#" class="btn btn-warning text-white" disabled>Added to cart</a></p>';
-                            } else { ?>
-                                <p><a href="cart-add.php?id=<?php echo $row['id']; ?>" class="btn btn-warning text-white">Thêm vào giỏ hàng</a></p>
-                            <?php }
-                        } ?>
-                    </div>
+    <?php while ($row = mysqli_fetch_assoc($result)) { ?>
+        <div class="col-md-3 col-6 py-2">
+            <div class="card">
+                <img src="images/<?php echo $row['image']; ?>" alt="" class="img-fluid product-image pb-1">
+                <div class="figure-caption">
+                    <h6><?php echo $row['name']; ?></h6>
+                    <h6>Giá: <?php echo number_format($row['price'], 0, ',', '.'); ?>₫</h6>
+                    <?php if (!isset($_SESSION['email'])) { ?>
+                        <p><a href="index.php#login" role="button" class="btn btn-warning text-white">Thêm vào giỏ hàng</a></p>
+                    <?php } else {
+                        if (check_if_added_to_cart($row['id'])) {
+                            echo '<p><a href="#" class="btn btn-warning text-white" disabled>Added to cart</a></p>';
+                        } else { ?>
+                            <p><a href="cart-add.php?id=<?php echo $row['id']; ?>" class="btn btn-warning text-white">Thêm vào giỏ hàng</a></p>
+                        <?php }
+                    } ?>
                 </div>
             </div>
-        <?php } ?>
-    </div>
+        </div>
+    <?php } ?>
+</div>
     <!--menu list ends-->
     
 </div>

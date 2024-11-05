@@ -17,34 +17,7 @@ session_start();
     <link rel="stylesheet" href="style.css">
     <!--css thanh cuộn-->
     <style>
-           .navbar {
-    position: fixed; /* Giữ thanh điều hướng cố định */
-    top: 0; /* Đặt ở trên cùng */
-    width: 100%; /* Chiếm toàn bộ chiều rộng */
-    z-index: 1000; /* Đảm bảo nó nằm trên các phần tử khác */
-    transition: all 0.3s ease; /* Hiệu ứng chuyển tiếp */
-}
 
-.navbar.DesktopHeader_isMinimised__sD95R {
-    background-color: rgba(255, 255, 255, 0.8); /* Màu nền khi rút gọn */
-    padding: 10px 0; /* Giảm khoảng cách trên và dưới */
-}
-
-.navbar .navbar-brand {
-    font-size: 1.5rem; /* Kích thước chữ lớn hơn khi bình thường */
-    transition: font-size 0.3s ease;
-}
-
-.navbar.DesktopHeader_isMinimised__sD95R .navbar-brand {
-    font-size: 1.2rem; /* Kích thước chữ nhỏ hơn khi rút gọn */
-}
-
-/* Đối với thiết bị di động */
-@media (max-width: 768px) {
-    .navbar {
-        padding: 10px; /* Padding cho thiết bị di động */
-    }
-}
 
     </style>
 </head>
@@ -153,22 +126,4 @@ $('#login').modal('show');
 
 
 </html>
-
-<!-- script thanh cuộn -->
-<script>
-$(document).ready(function() {
-    var navbar = $('.navbar'); // Chọn thanh điều hướng
-    var originalOffsetY = navbar.offset().top; // Lấy vị trí ban đầu của thanh điều hướng
-
-    function scroll() {
-        if ($(window).scrollTop() > originalOffsetY) {
-            navbar.addClass('DesktopHeader_isMinimised__sD95R'); // Thêm lớp khi cuộn xuống
-        } else {
-            navbar.removeClass('DesktopHeader_isMinimised__sD95R'); // Xóa lớp khi cuộn lên
-        }
-    }
-
-    document.addEventListener('scroll', scroll); // Lắng nghe sự kiện cuộn
-});
-</script>
 
