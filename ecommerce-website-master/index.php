@@ -17,7 +17,12 @@ session_start();
     <link rel="stylesheet" href="style.css">
     <!--css thanh cuộn-->
     <style>
-
+        .category-image {
+            height: 200px; /* Thay đổi chiều cao theo ý muốn */
+            object-fit: cover; /* Đảm bảo ảnh không bị biến dạng */
+            width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của thẻ cha */
+            border-radius: 0.5rem; /* Giữ border-radius như ban đầu */
+        }
 
     </style>
 </head>
@@ -45,43 +50,42 @@ include 'includes/check-if-added.php';
         Baker's Mart
     </div>
     <!--menu highlights start-->
- <div class="container pt-3">
-        <div class="row text-center ">
+    <div class="container pt-3">
+        <div class="row text-center">
             <div class="col-6 col-md-3 py-3">
-                <a href="category-material.php"> <img src="images/botlambanh.jpg" class="img-fluid " alt="" style="border-radius:0.5rem">
-                
+                <a href="category-material.php"> 
+                    <img src="images/botlambanh.jpg" class="img-fluid category-image" alt="">
                     <div class="h5 pt-3 font-weight-bolder">
-                      Nguyên liệu
-                   </div>
-                 </a>
-             </div>
-            <div class="col-6 col-md-3 py-3 " >
-                <a href="category-tool.php"  >
-                  <img src="images/sf400.jpg" class="img-fluid zoom" alt="" style="border-radius:0.5rem" >
-                     <div class="h5 pt-3 font-weight-bolder">
+                        Nguyên liệu
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3 py-3">
+                <a href="category-tool.php">
+                    <img src="images/sf400.jpg" class="img-fluid category-image" alt="">
+                    <div class="h5 pt-3 font-weight-bolder">
                         Dụng cụ
-                     </div>
-                  </a>
-             </div>
+                    </div>
+                </a>
+            </div>
             <div class="col-6 col-md-3 py-3">
                 <a href="category-decorate.php">
-                 <img src="images/phukien1.jpg" class="img-fluid   " alt="" style="border-radius:0.5rem">
-                <div class="h5 pt-3 font-weight-bolder">
-                    Phụ kiện trang trí
-                 </div>
-             </a>
-             </div>
+                    <img src="images/phukien1.jpg" class="img-fluid category-image" alt="">
+                    <div class="h5 pt-3 font-weight-bolder">
+                        Phụ kiện trang trí
+                    </div>
+                </a>
+            </div>
             <div class="col-6 col-md-3 py-3">
                 <a href="category-ingredients.php">
-                 <img src="images/cadong.jpg" class="img-fluid  " alt="" style="border-radius:0.5rem">
-                 <div class="h5 pt-3 font-weight-bolder">
-                    Pha chế
-                 </div>
-              </div>
-            </a>
+                    <img src="images/cadong.jpg" class="img-fluid category-image" alt="">
+                    <div class="h5 pt-3 font-weight-bolder">
+                        Pha chế
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
-
     <!--menu highlights end-->
     <!--footer -->
     <?php include 'includes/footer.php'?>
@@ -121,9 +125,5 @@ $('#login').modal('show');
 });
 </script>";
     echo "<script type='text/javascript'>alert('" . $z . "')</script>";}?>
-
-
-
-
 </html>
 
