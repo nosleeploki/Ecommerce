@@ -34,18 +34,18 @@ include 'includes/check-if-added.php';
 ?>
     <!--Header ends-->
     <div id="content">
-        <div id="bg" class=" ">
-            <div class="container" style="padding-top:150px">
-            <div class="mx-auto p-5 text-white" id="banner_content" style="border-radius: 0.5rem;" >
-            <h1>We sell Happiness :)</h1>
-            <p>###</p>
-            <a href="products.php" class="btn btn-warning btn-lg text-white">Shop Now</a>
-
+    <div id="bg" style="background-image: url('images/webpage.jpg'); background-size: cover; background-position: center; padding-top: 150px;">
+        <div class="container">
+            <div class="mx-auto p-5 text-white" id="banner_content" style="border-radius: 0.5rem; background: rgba(0, 0, 0, 0.5);">
+                <h1>We sell Happiness :)</h1>
+                <p>###</p>
+                <a href="products.php" class="btn btn-warning btn-lg text-white">Shop Now</a>
             </div>
-            </div>
-
         </div>
     </div>
+</div>
+
+
     <div class="text-center pt-4 h3">
         Baker's Mart
     </div>
