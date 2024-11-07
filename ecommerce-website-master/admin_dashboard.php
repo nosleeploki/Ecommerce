@@ -18,13 +18,6 @@ $query_products = "SELECT id, name, price, brand FROM products";
 $result_products = mysqli_query($con, $query_products);
 $products = mysqli_fetch_all($result_products, MYSQLI_ASSOC);
 
-// Thêm danh sách sản phẩm
-// Kiểm tra xem người dùng đã đăng nhập và có vai trò là admin chưa
-if (!isset($_SESSION['email']) || $_SESSION['role'] != 'admin') {
-    header('location: index.php'); // Chuyển hướng về trang chính nếu không phải admin
-    exit();
-}
-
 // Xử lý form khi người dùng gửi dữ liệu
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $productName = mysqli_real_escape_string($con, $_POST['product_name']);
@@ -42,37 +35,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     mysqli_query($con, $query);
 
     // Chuyển hướng về trang quản lý sản phẩm hoặc thông báo thành công
-    header('location: admin_dashboard.php?success=Product added successfully');
+    $_SESSION['message'] = 'Product added successfully';
+    header('location: admin_dashboard.php');
     exit();
 }
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
-    $productId = mysqli_real_escape_string($con, $_POST['product_id']);
-    $productName = mysqli_real_escape_string($con, $_POST['product_name']);
-    $productPrice = mysqli_real_escape_string($con, $_POST['product_price']);
-    $productBrand = mysqli_real_escape_string($con, $_POST['product_brand']);
-    
-    // Kiểm tra xem có hình ảnh mới không
-    if ($_FILES['product_image']['name']) {
-        $productImage = $_FILES['product_image']['name'];
-        $targetDir = "images/";
-        $targetFile = $targetDir . basename($productImage);
-        move_uploaded_file($_FILES['product_image']['tmp_name'], $targetFile);
-        
-        // Cập nhật sản phẩm với hình ảnh mới
-        $query = "UPDATE products SET name = '$productName', price = '$productPrice', image = '$productImage', brand = '$productBrand' WHERE id = '$productId'";
-    } else {
-        // Cập nhật sản phẩm mà không thay đổi hình ảnh
-        $query = "UPDATE products SET name = '$productName', price = '$productPrice', brand = '$productBrand' WHERE id = '$productId'";
-    }
-    
-    mysqli_query($con, $query);
-    header('Location: admin_dashboard.php?success=Product updated successfully');
-    exit();
-}
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -81,9 +47,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Thêm CSS nếu cần -->
+    <link rel="stylesheet" href="styles.css">
     <style>
-    body {
+         body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
@@ -234,7 +200,7 @@ button:hover {
     border-radius: 5px;
     padding: 5px;
 }
-</style>
+    </style>
 </head>
 <body>
     <header>
@@ -265,67 +231,66 @@ button:hover {
             </table>
         </section>
         <section>
-    <h2 style="display: inline-block; margin-right: 20px;">Quản Lý Sản Phẩm</h2>
-    <button class="btnadd" onclick="showPopup()" style="display: inline-block;">Thêm Sản Phẩm</button> <br>
-    <input type="text" id="search" placeholder="Tìm kiếm sản phẩm..." value="<?php echo $searchTerm; ?>">
-    <button class="btnadd" onclick="searchProduct()">Tìm kiếm</button>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Tên Sản Phẩm</th>
-                <th>Giá</th>
-                <th>Loại sản phẩm</th>
-                <th>Hành động</th> <!-- Cột hành động -->
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($products as $product): ?>
-                <tr>
-                    <td><?php echo $product['id']; ?></td>
-                    <td><?php echo $product['name']; ?></td>
-                    <td><?php echo number_format($product['price'], 2); ?> VND</td>
-                    <td><?php echo $product['brand']; ?></td>
-                    <td>
-                        <form action="delete_product.php" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
-                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
-                            <button class="btndelete" type="submit">Xóa</button>
-                        </form>
-                        <button class="btnedit" type="submit">Sửa</button>
+            <h2 style="display: inline-block; margin-right: 20px;">Quản Lý Sản Phẩm</h2>
+            <button class="btnadd" onclick="showPopup()" style="display: inline-block;">Thêm Sản Phẩm</button>
+            <br>
+            <input type="text" id="search" placeholder="Tìm kiếm sản phẩm...">
+            <button class="btnadd" onclick="searchProduct()">Tìm kiếm</button>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Tên Sản Phẩm</th>
+                        <th>Giá</th>
+                        <th>Loại sản phẩm</th>
+                        <th>Hành động</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($products as $product): ?>
+                        <tr>
+                            <td><?php echo $product['id']; ?></td>
+                            <td><?php echo $product['name']; ?></td>
+                            <td><?php echo number_format($product['price'], 2); ?> VND</td>
+                            <td><?php echo $product['brand']; ?></td>
+                            <td>
+                                <form action="delete_product.php" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                                    <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                                    <button class="btndelete" type="submit">Xóa</button>
+                                </form>
+                                <button class="btnedit" onclick="showEditPopup('<?php echo $product['id']; ?>', '<?php echo addslashes($product['name']); ?>', '<?php echo $product['price']; ?>', '<?php echo addslashes($product['brand']); ?>')">Sửa</button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        </section>
 
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
-</section>
-
-
-<!--popup-->
-<div class="popup" id="productPopup">
+        <!-- Popup them san pham -->
+        <div class="popup" id="productPopup">
             <div class="popup-content">
                 <span class="close" onclick="closePopup()">&times;</span>
                 <h2>Thêm Sản Phẩm Mới</h2>
-            <form method="POST" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="product_name">Tên Sản Phẩm:</label>
-                    <input type="text" class="form-control" id="product_name" name="product_name" required>
-            </div>
-                <div class="form-group">
-                    <label for="product_price">Giá:</label>
-                    <input type="number" class="form-control" id="product_price" name="product_price" required>
-            </div>
-                <div class="form-group">
-                    <label for="product_image">Loại sản phẩm:</label>
-                    <input type="text" class="form-control" id="product_brand" name="product_brand" required>
-                </div>
-                <div class="form-group">
-                    <label for="product_image">Hình Ảnh:</label>
-                    <input type="file" class="form-control-file" id="product_image" name="product_image" required>
-                </div>
-                <button class="btnadd" type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
-            </form>
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="product_name">Tên Sản Phẩm:</label>
+                        <input type="text" class="form-control" id="product_name" name="product_name" required>
                     </div>
+                    <div class="form-group">
+                        <label for="product_price">Giá:</label>
+                        <input type="number" class="form-control" id="product_price" name="product_price" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product_brand">Loại sản phẩm:</label>
+                        <input type="text" class="form-control" id="product_brand" name="product_brand" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product_image">Hình Ảnh:</label>
+                        <input type="file" class="form-control-file" id="product_image" name="product_image" required>
+                    </div>
+                    <button class="btnadd" type="submit">Thêm Sản Phẩm</button>
+                </form>
+            </div>
         </div>
 
         <!-- Popup sửa sản phẩm -->
@@ -333,7 +298,7 @@ button:hover {
             <div class="popup-content">
                 <span class="close" onclick="closeEditPopup()">&times;</span>
                 <h2>Sửa Sản Phẩm</h2>
-                <form method="POST" enctype="multipart/form-data" id="editProductForm">
+                <form method="POST" enctype="multipart/form-data" action="update_product.php">
                     <input type="hidden" id="edit_product_id" name="product_id">
                     <div class="form-group">
                         <label for="edit_product_name">Tên Sản Phẩm:</label>
@@ -351,7 +316,7 @@ button:hover {
                         <label for="edit_product_image">Hình Ảnh (nếu muốn thay đổi):</label>
                         <input type="file" class="form-control-file" id="edit_product_image" name="product_image">
                     </div>
-                    <button class="btnadd" type="submit">Cập Nhật Sản Phẩm</button>
+                    <button class="btnedit" type="submit">Cập Nhật Sản Phẩm</button>
                 </form>
             </div>
         </div>
@@ -368,7 +333,28 @@ button:hover {
         function closePopup() {
             document.getElementById('productPopup').style.display = 'none';
         }
-    </script>
 
+        function showEditPopup(productId, productName, productPrice, productBrand) {
+            document.getElementById('edit_product_id').value = productId;
+            document.getElementById('edit_product_name').value = productName;
+            document.getElementById('edit_product_price').value = productPrice;
+            document.getElementById('edit_product_brand').value = productBrand;
+            document.getElementById('editProductPopup').style.display = 'flex';
+        }
+
+        function closeEditPopup() {
+            document.getElementById('editProductPopup').style.display = 'none';
+        }
+
+        function searchProduct() {
+            // Implement search functionality here
+        }
+
+        // Show a popup if there’s a session message
+        <?php if (isset($_SESSION['message'])): ?>
+            alert('<?php echo $_SESSION['message']; ?>');
+            <?php unset($_SESSION['message']); ?>
+        <?php endif; ?>
+    </script>
 </body>
 </html>
