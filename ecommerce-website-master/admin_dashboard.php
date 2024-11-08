@@ -27,8 +27,20 @@ if ($searchTerm) {
 $result_products = mysqli_query($con, $query_products);
 $products = mysqli_fetch_all($result_products, MYSQLI_ASSOC);
 
+<<<<<<< HEAD
 // Thêm sản phẩm
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_name'])) {
+=======
+// Thêm danh sách sản phẩm
+// Kiểm tra xem người dùng đã đăng nhập và có vai trò là admin chưa
+if (!isset($_SESSION['email']) || $_SESSION['role'] != 'admin') {
+    header('location: index.php'); // Chuyển hướng về trang chính nếu không phải admin
+    exit();
+}
+
+// Xử lý form khi người dùng gửi dữ liệu
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+>>>>>>> parent of 880c4d9 (Fixed edit button)
     $productName = mysqli_real_escape_string($con, $_POST['product_name']);
     $productPrice = mysqli_real_escape_string($con, $_POST['product_price']);
     $productBrand = mysqli_real_escape_string($con, $_POST['product_brand']);
@@ -38,30 +50,59 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_name'])) {
     move_uploaded_file($_FILES['product_image']['tmp_name'], $targetFile);
     $query = "INSERT INTO products (name, price, image, brand) VALUES ('$productName', '$productPrice', '$productImage', '$productBrand')";
     mysqli_query($con, $query);
+<<<<<<< HEAD
+=======
+
+    // Chuyển hướng về trang quản lý sản phẩm hoặc thông báo thành công
+>>>>>>> parent of 880c4d9 (Fixed edit button)
     header('location: admin_dashboard.php?success=Product added successfully');
     exit();
 }
 
+<<<<<<< HEAD
 // Cập nhật sản phẩm
+=======
+>>>>>>> parent of 880c4d9 (Fixed edit button)
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
     $productId = mysqli_real_escape_string($con, $_POST['product_id']);
     $productName = mysqli_real_escape_string($con, $_POST['product_name']);
     $productPrice = mysqli_real_escape_string($con, $_POST['product_price']);
     $productBrand = mysqli_real_escape_string($con, $_POST['product_brand']);
+<<<<<<< HEAD
+=======
+    
+    // Kiểm tra xem có hình ảnh mới không
+>>>>>>> parent of 880c4d9 (Fixed edit button)
     if ($_FILES['product_image']['name']) {
         $productImage = $_FILES['product_image']['name'];
         $targetDir = "images/";
         $targetFile = $targetDir . basename($productImage);
         move_uploaded_file($_FILES['product_image']['tmp_name'], $targetFile);
+<<<<<<< HEAD
         $query = "UPDATE products SET name = '$productName', price = '$productPrice', image = '$productImage', brand = '$productBrand' WHERE id = '$productId'";
     } else {
         $query = "UPDATE products SET name = '$productName', price = '$productPrice', brand = '$productBrand' WHERE id = '$productId'";
     }
+=======
+        
+        // Cập nhật sản phẩm với hình ảnh mới
+        $query = "UPDATE products SET name = '$productName', price = '$productPrice', image = '$productImage', brand = '$productBrand' WHERE id = '$productId'";
+    } else {
+        // Cập nhật sản phẩm mà không thay đổi hình ảnh
+        $query = "UPDATE products SET name = '$productName', price = '$productPrice', brand = '$productBrand' WHERE id = '$productId'";
+    }
+    
+>>>>>>> parent of 880c4d9 (Fixed edit button)
     mysqli_query($con, $query);
     header('Location: admin_dashboard.php?success=Product updated successfully');
     exit();
 }
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> parent of 880c4d9 (Fixed edit button)
 ?>
 
 <!DOCTYPE html>
@@ -72,6 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="styles.css"> <!-- Thêm CSS nếu cần -->
+<<<<<<< HEAD
     <link href='https://fonts.googleapis.com/css?family=Delius+Swash+Caps' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Andika' rel='stylesheet'>
     <style>
@@ -81,6 +123,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
             padding: 0;
             background-color: #f4f4f4;
         }
+=======
+    <style>
+    body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+>>>>>>> parent of 880c4d9 (Fixed edit button)
 
         header {
             background: #35424a;
@@ -231,12 +282,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
             border-radius: 5px;
         }
 
+<<<<<<< HEAD
         .form-control-file {
             border: 1px solid #ccc;
             border-radius: 5px;
             padding: 5px;
         }
     </style>
+=======
+.form-control-file {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+}
+</style>
+>>>>>>> parent of 880c4d9 (Fixed edit button)
 </head>
 
 <body>
@@ -268,6 +328,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
             </table>
         </section>
         <section>
+<<<<<<< HEAD
             <h2 style="display: inline-block; margin-right: 20px;">Quản Lý Sản Phẩm</h2>
             <button class="btnadd" onclick="showPopup()">Thêm Sản Phẩm</button> <br>
             <form method="POST" action="" style="display: inline-block;">
@@ -307,30 +368,101 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
         </section>
 
         <div class="popup" id="productPopup">
+=======
+    <h2 style="display: inline-block; margin-right: 20px;">Quản Lý Sản Phẩm</h2>
+    <button class="btnadd" onclick="showPopup()" style="display: inline-block;">Thêm Sản Phẩm</button> <br>
+    <input type="text" id="search" placeholder="Tìm kiếm sản phẩm..." value="<?php echo $searchTerm; ?>">
+    <button class="btnadd" onclick="searchProduct()">Tìm kiếm</button>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tên Sản Phẩm</th>
+                <th>Giá</th>
+                <th>Loại sản phẩm</th>
+                <th>Hành động</th> <!-- Cột hành động -->
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($products as $product): ?>
+                <tr>
+                    <td><?php echo $product['id']; ?></td>
+                    <td><?php echo $product['name']; ?></td>
+                    <td><?php echo number_format($product['price'], 2); ?> VND</td>
+                    <td><?php echo $product['brand']; ?></td>
+                    <td>
+                        <form action="delete_product.php" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
+                            <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
+                            <button class="btndelete" type="submit">Xóa</button>
+                        </form>
+                        <button class="btnedit" type="submit">Sửa</button>
+
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</section>
+
+
+<!--popup-->
+<div class="popup" id="productPopup">
+>>>>>>> parent of 880c4d9 (Fixed edit button)
             <div class="popup-content">
                 <span class="close" onclick="closePopup()">&times;</span>
                 <h2>Thêm Sản Phẩm Mới</h2>
-                <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label for="product_name">Tên Sản Phẩm:</label>
+                    <input type="text" class="form-control" id="product_name" name="product_name" required>
+            </div>
+                <div class="form-group">
+                    <label for="product_price">Giá:</label>
+                    <input type="number" class="form-control" id="product_price" name="product_price" required>
+            </div>
+                <div class="form-group">
+                    <label for="product_image">Loại sản phẩm:</label>
+                    <input type="text" class="form-control" id="product_brand" name="product_brand" required>
+                </div>
+                <div class="form-group">
+                    <label for="product_image">Hình Ảnh:</label>
+                    <input type="file" class="form-control-file" id="product_image" name="product_image" required>
+                </div>
+                <button class="btnadd" type="submit" class="btn btn-primary">Thêm Sản Phẩm</button>
+            </form>
+                    </div>
+        </div>
+<<<<<<< HEAD
+=======
+
+        <!-- Popup sửa sản phẩm -->
+        <div class="popup" id="editProductPopup">
+            <div class="popup-content">
+                <span class="close" onclick="closeEditPopup()">&times;</span>
+                <h2>Sửa Sản Phẩm</h2>
+                <form method="POST" enctype="multipart/form-data" id="editProductForm">
+                    <input type="hidden" id="edit_product_id" name="product_id">
                     <div class="form-group">
-                        <label for="product_name">Tên Sản Phẩm:</label>
-                        <input type="text" class="form-control" id="product_name" name="product_name" required>
+                        <label for="edit_product_name">Tên Sản Phẩm:</label>
+                        <input type="text" class="form-control" id="edit_product_name" name="product_name" required>
                     </div>
                     <div class="form-group">
-                        <label for="product_price">Giá:</label>
-                        <input type="number" class="form-control" id="product_price" name="product_price" required>
+                        <label for="edit_product_price">Giá:</label>
+                        <input type="number" class="form-control" id="edit_product_price" name="product_price" required>
                     </div>
                     <div class="form-group">
-                        <label for="product_brand">Loại sản phẩm:</label>
-                        <input type="text" class="form-control" id="product_brand" name="product_brand" required>
+                        <label for="edit_product_brand">Loại sản phẩm:</label>
+                        <input type="text" class="form-control" id="edit_product_brand" name="product_brand" required>
                     </div>
                     <div class="form-group">
-                        <label for="product_image">Hình Ảnh:</label>
-                        <input type="file" class="form-control-file" id="product_image" name="product_image" required>
+                        <label for="edit_product_image">Hình Ảnh (nếu muốn thay đổi):</label>
+                        <input type="file" class="form-control-file" id="edit_product_image" name="product_image">
                     </div>
-                    <button class="btnadd" type="submit">Thêm Sản Phẩm</button>
+                    <button class="btnadd" type="submit">Cập Nhật Sản Phẩm</button>
                 </form>
             </div>
         </div>
+>>>>>>> parent of 880c4d9 (Fixed edit button)
     </main>
     <footer>
         <p>Bản quyền © 2024</p>
@@ -345,6 +477,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
             document.getElementById('productPopup').style.display = 'none';
         }
     </script>
+
 </body>
 
 </html>
