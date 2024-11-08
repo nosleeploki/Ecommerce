@@ -228,9 +228,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
             background-color: #F60002;
         }
 
-        button:hover {
-            background-color: #c0392b;
-        }
+button:hover {
+    background-color: #c0392b;
+}
 
         .btnadd {
             background-color: #28a745;
