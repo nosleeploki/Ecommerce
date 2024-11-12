@@ -73,7 +73,7 @@ if (!isset($_SESSION['email'])) {
                 </tbody>
             <?php
             } else {
-                echo "<div><img src='images/emptycart.png' class='image-fluid' height='150' width='150'></div><br/>";
+               ## echo "<div><img src='images/emptycart.png' class='image-fluid' height='150' width='150'></div><br/>"; 
                 echo "<div class='text-bold h5'>Hãy thêm mặt hàng trước!</div>";
             }
             ?>
