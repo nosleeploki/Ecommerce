@@ -4,7 +4,7 @@ require("includes/common.php"); // Kết nối cơ sở dữ liệu
 
 // Lấy danh sách sản phẩm từ cơ sở dữ liệu
 $category = isset($_GET['category']) ? $_GET['category'] : '';
-$query = "SELECT DISTINCT brand, id, name, price, image FROM products WHERE brand = 'nguyenlieu'" . ($category ? " AND category = '$category'" : ""); // Thay 'products' bằng tên bảng của bạn
+$query = "SELECT DISTINCT brand, id, name, price, image, motasanpham FROM products WHERE brand = 'nguyenlieu'" . ($category ? " AND category = '$category'" : ""); // Thêm motasanpham vào truy vấn
 $result = mysqli_query($con, $query);
 ?>
 
@@ -26,6 +26,17 @@ $result = mysqli_query($con, $query);
             height: 200px; /* Thay đổi chiều cao theo ý muốn */
             object-fit: cover; /* Đảm bảo ảnh không bị biến dạng */
             width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của thẻ cha */
+        }
+        /* Đặt kích thước cho modal */
+        .modal-dialog {
+            max-width: 350px; /* Kích thước chiều rộng */
+        }
+
+        /* Đặt kích thước cho hình ảnh trong modal */
+        #modalProductImage {
+            width: 300px; /* Kích thước chiều rộng */
+            height: 190px; /* Kích thước chiều cao */
+            object-fit: cover; /* Đảm bảo hình ảnh không bị biến dạng */
         }
     </style>
 </head>
@@ -61,7 +72,14 @@ include 'includes/check-if-added.php';
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <div class="col-md-3 col-6 py-2">
             <div class="card">
-                <img src="images/<?php echo $row['image']; ?>" alt="" class="img-fluid product-image pb-1">
+                <img src="images/<?php echo $row['image']; ?>" alt="" class="img-fluid product-image pb-1" 
+                    data-toggle="modal" 
+                    data-target="#productModal" 
+                    data-name="<?php echo $row['name']; ?>" 
+                    data-price="<?php echo number_format($row['price'], 0, ',', '.'); ?>₫" 
+                    data-description="<?php echo $row['motasanpham']; ?>" 
+                    data-image="images/<?php echo $row['image']; ?>"> 
+
                 <div class="figure-caption">
                     <h6><?php echo $row['name']; ?></h6>
                     <h6>Giá: <?php echo number_format($row['price'], 0, ',', '.'); ?>₫</h6>
@@ -80,7 +98,30 @@ include 'includes/check-if-added.php';
     <?php } ?>
 </div>
     <!--menu list ends-->
-    
+
+    <!-- Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalProductName"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <img id="modalProductImage" src="" alt="" class="img-fluid mb-3">
+                    <p><strong>Mô tả:</strong></p>
+                    <p id="modalProductDescription"></p>
+                    <p id="modalProductPrice"></p>
+                    <div class="text-center">
+                        <button id="addToCartButton" class="btn btn-primary">Thêm vào giỏ hàng</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
  <!-- footer-->
  <?php include 'includes/footer.php' ?>
@@ -91,7 +132,19 @@ include 'includes/check-if-added.php';
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 <script>
 $(document).ready(function(){
-  $('[data-toggle="popover"]').popover();
+    $('#productModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // nút kích hoạt modal
+        var name = button.data('name');
+        var price = button.data('price');
+        var description = button.data('description');
+        var image = button.data('image');
+
+        var modal = $(this);
+        modal.find('#modalProductName').text(name);
+        modal.find('#modalProductPrice').text(price);
+        modal.find('#modalProductDescription').text(description);
+        modal.find('#modalProductImage').attr('src', image);
+    });
 });
 </script>
 </html>

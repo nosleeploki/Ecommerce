@@ -9,7 +9,7 @@ $offset = ($page - 1) * $limit;
 
 // Lấy danh sách sản phẩm từ cơ sở dữ liệu với phân trang
 $category = isset($_GET['category']) ? $_GET['category'] : '';
-$query = "SELECT * FROM products" . ($category ? " WHERE category = '$category'" : "") . " LIMIT $limit OFFSET $offset";
+$query = "SELECT id, name, price, image, motasanpham FROM products" . ($category ? " WHERE category = '$category'" : "") . " LIMIT $limit OFFSET $offset";
 $result = mysqli_query($con, $query);
 
 // Lấy tổng số sản phẩm để tính số trang
@@ -18,6 +18,8 @@ $total_result = mysqli_query($con, $total_query);
 $total_row = mysqli_fetch_assoc($total_result);
 $total_products = $total_row['total'];
 $total_pages = ceil($total_products / $limit);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -39,6 +41,20 @@ $total_pages = ceil($total_products / $limit);
             object-fit: cover; /* Đảm bảo ảnh không bị biến dạng */
             width: 100%; /* Đảm bảo ảnh chiếm toàn bộ chiều rộng của thẻ cha */
         }
+
+        /* Đặt kích thước cho modal */
+        .modal-dialog {
+            max-width: 350px; /* Kích thước chiều rộng */
+        }
+
+        /* Đặt kích thước cho hình ảnh trong modal */
+        #modalProductImage {
+            width: 300px; /* Kích thước chiều rộng */
+            height: 190px; /* Kích thước chiều cao */
+            object-fit: cover; /* Đảm bảo hình ảnh không bị biến dạng */
+        }
+
+
     </style>
 </head>
 <body>
@@ -56,6 +72,30 @@ include 'includes/check-if-added.php';
     </div>
     <!--jumbotron ends-->
     
+    <!--popup info-->
+    <!-- Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1" role="dialog" aria-labelledby="productModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalProductName"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <img id="modalProductImage" src="" alt="" class="img-fluid mb-3">
+                <p><strong>Mô tả:</strong></p> <!-- Thêm chữ "Mô tả" -->
+                <p id="modalProductDescription"></p>
+                <p id="modalProductPrice"></p>
+                <div class="text-center"> <!-- Thêm lớp text-center để căn giữa -->
+                    <button id="addToCartButton" class="btn btn-primary">Thêm vào giỏ hàng</button>
+                </div> <!-- Nút thêm vào giỏ hàng -->
+            </div>
+        </div>
+    </div>
+</div>
+
     <!--breadcrumb start-->
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -72,7 +112,14 @@ include 'includes/check-if-added.php';
     <?php while ($row = mysqli_fetch_assoc($result)) { ?>
         <div class="col-md-3 col-6 py-2">
             <div class="card">
-                <img src="images/<?php echo $row['image']; ?>" alt="" class="img-fluid product-image pb-1">
+                <img src="images/<?php echo $row['image']; ?>" alt="" class="img-fluid product-image pb-1" 
+                    data-toggle="modal" 
+                    data-target="#productModal" 
+                    data-name="<?php echo $row['name']; ?>" 
+                    data-price="<?php echo number_format($row['price'], 0, ',', '.'); ?>₫" 
+                    data-description="<?php echo $row['motasanpham']; ?>" 
+                    data-image="images/<?php echo $row['image']; ?>"> 
+
                 <div class="figure-caption">
                     <h6><?php echo $row['name']; ?></h6>
                     <h6>Giá: <?php echo number_format($row['price'], 0, ',', '.'); ?>₫</h6>
@@ -130,4 +177,39 @@ $(document).ready(function(){
   $('[data-toggle="popover"]').popover();
 });
 </script>
+<script>
+$(document).ready(function(){
+    $('#productModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // nút kích hoạt modal
+        var name = button.data('name');
+        var price = button.data('price');
+        var description = button.data('description');
+        var image = button.data('image');
+
+        var modal = $(this);
+        modal.find('#modalProductName').text(name);
+        modal.find('#modalProductPrice').text(price);
+        modal.find('#modalProductDescription').text(description);
+        modal.find('#modalProductImage').attr('src', image);
+
+        // Xử lý sự kiện nhấn nút "Thêm vào giỏ hàng"
+        $('#addToCartButton').off('click').on('click', function() {
+            // Logic thêm sản phẩm vào giỏ hàng
+            addToCart(name, price, image);
+            alert(name + " đã được thêm vào giỏ hàng!"); // Thông báo cho người dùng
+        });
+    });
+});
+
+// Hàm thêm sản phẩm vào giỏ hàng
+function addToCart(name, price, image) {
+    // Logic để thêm sản phẩm vào giỏ hàng
+    // Bạn có thể sử dụng LocalStorage, session hoặc gửi yêu cầu tới server
+    console.log("Thêm vào giỏ hàng:", name, price, image);
+}
+</script>
+
+
+
+
 </html>

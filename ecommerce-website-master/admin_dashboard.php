@@ -8,7 +8,7 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 require("includes/common.php");
 
 // Lấy danh sách người dùng
-$query = "SELECT id, email_id FROM users";
+$query = "SELECT id, email_id, first_name, last_name FROM users";
 $result = mysqli_query($con, $query);
 $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 
@@ -16,7 +16,8 @@ $users = mysqli_fetch_all($result, MYSQLI_ASSOC);
 $searchTerm = isset($_POST['searchTerm']) ? $_POST['searchTerm'] : '';
 $searchField = isset($_POST['searchField']) ? $_POST['searchField'] : 'name';
 
-$query_products = "SELECT id, name, price, brand FROM products";
+//Truy xuat
+$query_products = "SELECT id, name, price, brand, motasanpham, image FROM products";
 if ($searchTerm) {
     if ($searchField == 'name') {
         $query_products .= " WHERE name LIKE '%$searchTerm%'";
@@ -32,11 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_name'])) {
     $productName = mysqli_real_escape_string($con, $_POST['product_name']);
     $productPrice = mysqli_real_escape_string($con, $_POST['product_price']);
     $productBrand = mysqli_real_escape_string($con, $_POST['product_brand']);
+    $productDescription = mysqli_real_escape_string($con, $_POST['product_description']);
     $productImage = $_FILES['product_image']['name'];
     $targetDir = "images/";
     $targetFile = $targetDir . basename($productImage);
     move_uploaded_file($_FILES['product_image']['tmp_name'], $targetFile);
-    $query = "INSERT INTO products (name, price, image, brand) VALUES ('$productName', '$productPrice', '$productImage', '$productBrand')";
+    $query = "INSERT INTO products (name, price, image, brand, motasanpham) VALUES ('$productName', '$productPrice', '$productImage', '$productBrand', '$productDescription')";
     mysqli_query($con, $query);
     header('location: admin_dashboard.php?success=Product added successfully');
     exit();
@@ -48,14 +50,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['product_id'])) {
     $productName = mysqli_real_escape_string($con, $_POST['product_name']);
     $productPrice = mysqli_real_escape_string($con, $_POST['product_price']);
     $productBrand = mysqli_real_escape_string($con, $_POST['product_brand']);
+    $productDescription = mysqli_real_escape_string($con, $_POST['product_description']);
     if ($_FILES['product_image']['name']) {
         $productImage = $_FILES['product_image']['name'];
         $targetDir = "images/";
         $targetFile = $targetDir . basename($productImage);
         move_uploaded_file($_FILES['product_image']['tmp_name'], $targetFile);
-        $query = "UPDATE products SET name = '$productName', price = '$productPrice', image = '$productImage', brand = '$productBrand' WHERE id = '$productId'";
+        $query = "UPDATE products SET name = '$productName', price = '$productPrice', image = '$productImage', brand = '$productBrand', motasanpham = '$productDescription' WHERE id = '$productId'";
     } else {
-        $query = "UPDATE products SET name = '$productName', price = '$productPrice', brand = '$productBrand' WHERE id = '$productId'";
+        $query = "UPDATE products SET name = '$productName', price = '$productPrice', brand = '$productBrand', motasanpham = '$productDescription' WHERE id = '$productId'";
     }
     mysqli_query($con, $query);
     header('Location: admin_dashboard.php?success=Product updated successfully');
@@ -84,6 +87,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
     <link href='https://fonts.googleapis.com/css?family=Delius+Swash+Caps' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Andika' rel='stylesheet'>
     <style>
+        section{
+            display: none;
+        }
         body {
             font-family: 'Andika', sans-serif;
             margin: 0;
@@ -151,28 +157,43 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
         }
 
         #user-table th:nth-child(2){
-            width: 40%;
+            width: 30%;
         }
 
         #user-table th:nth-child(3){
-            width: 10%;
+            width: 20%;
         }
 
         #user-table th:nth-child(4){
-            width: 1%;
+            width: 10%;
         }
 
         #user-table th:nth-child(5){
-            width: 10%;
+            width: 8%;
         }
-
+        #user-table th:nth-child(6){
+            width: 5%;
+        }
+        #product-table th:nth-child(1){
+            width: 4%;
+        }
+        #product-table th:nth-child(2){
+            width: 40%;
+        }
+        #product-table th:nth-child(3){
+            width: 15%;
+        }
         #product-table th:nth-child(4){
             width: 10%;
         }
-
         #product-table th:nth-child(5){
+            width: 30%;
+        }
+
+        #product-table th:nth-child(6){
             width: 1%;
         }
+
 
         table th {
             background-color: #35424a;
@@ -205,12 +226,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
             border-radius: 5px;
         }
 
+        .m1{
+            background-color: #35424a;
+        }
+        .m1:hover{
+            background-color: #1d2429;
+        }
         .btndelete {
             background-color: #F60002;
         }
-
-        button:hover {
-            background-color: #c0392b;
+        .btndelete:hover {
+            background-color: #7f0304;
         }
 
         .btnadd, .btnedit {
@@ -218,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
             margin: 10px 0;
         }
 
-        .btnadd, .btnedit:hover {
+        .btnadd:hover, .btnedit:hover {
             background-color: #218838; /* Màu xanh đậm khi hover */
         }
 
@@ -296,6 +322,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
     </header>
 
     <main>
+    <button class="m1" onclick="toggleSection('user')">Quản Lý Người Dùng</button>
+    <button class= "m1" onclick="toggleSection('product')">Quản Lý Sản Phẩm</button>
         <section id="user">
             <h2>Quản Lý Người Dùng</h2>
             <table id="user-table">
@@ -303,6 +331,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
                     <tr>
                         <th>ID</th>
                         <th>Email</th>
+                        <th>Tên người dùng</th>
                         <th>Vai trò hiện tại</th>
                         <th>Phân quyền người dùng</th>
                         <th>Hành động</th>
@@ -313,6 +342,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
                     <tr>
                         <td><?php echo $user['id']; ?></td>
                         <td><?php echo $user['email_id']; ?></td>
+                        <td><?php echo $user['last_name']," ";
+                                    echo $user['first_name']; ?></td>
                         <td>
                             <?php
                                 $query = "SELECT role FROM users WHERE id = {$user['id']}";
@@ -338,7 +369,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
                 </tbody>     
             </table>
         </section>
-        <section>
+        <section id="product">
             <h2 style="display: inline-block; margin-right: 20px;">Quản Lý Sản Phẩm</h2>
             <button class="btnadd" onclick="showPopup()">Thêm Sản Phẩm</button> <br>
             <form method="POST" action="" style="display: inline-block;">
@@ -354,6 +385,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
                         <th>Tên Sản Phẩm</th>
                         <th>Giá</th>
                         <th>Loại sản phẩm</th>
+                        <th>Mô tả sản phẩm</th>
+                        <th>Hình ảnh</th>
                         <th>Hành động</th>
                     </tr>
                 </thead>
@@ -362,14 +395,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
                         <tr>
                             <td><?php echo $product['id']; ?></td>
                             <td><?php echo $product['name']; ?></td>
-                            <td><?php echo number_format($product['price'], 2); ?> VND</td>
+                            <td><?php echo number_format($product['price']); ?> VND</td>
                             <td><?php echo $product['brand']; ?></td>
+                            <td><?php echo $product['motasanpham']; ?></td>
+                            <td> <img src="images/<?php echo $product['image']; ?>" alt="<?php echo $product['name']; ?>" style="width: 100px; height: 100px;"></td>
+
+                        
                             <td style="display: flex; gap: 8px; align-items: center;">
     <form action="delete_product.php" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa sản phẩm này?');">
         <input type="hidden" name="product_id" value="<?php echo $product['id']; ?>">
         <button class="btndelete" type="submit">Xóa</button>
     </form>
-    <button class="btnedit" onclick="showEditPopup('<?php echo $product['id']; ?>', '<?php echo addslashes($product['name']); ?>', '<?php echo $product['price']; ?>', '<?php echo addslashes($product['brand']); ?>')">
+    <button class="btnedit" onclick="showEditPopup('<?php echo $product['id']; ?>', '<?php echo addslashes($product['name']); ?>', '<?php echo $product['price']; ?>', '<?php echo addslashes($product['brand']); ?>', '<?php echo addslashes($product['motasanpham']); ?>')">
         Sửa
     </button>
 </td>
@@ -396,6 +433,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
                     <div class="form-group">
                         <label for="product_brand">Loại sản phẩm:</label>
                         <input type="text" class="form-control" id="product_brand" name="product_brand" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="product_description">Mô tả sản phẩm:</label>
+                        <input type="text" class="form-control" id="product_description" name="product_description" required>
                     </div>
                     <div class="form-group">
                         <label for="product_image">Hình Ảnh:</label>
@@ -425,6 +466,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
                         <input type="text" class="form-control" id="edit_product_brand" name="product_brand" required>
                     </div>
                     <div class="form-group">
+                        <label for="edit_product_description">Mô tả sản phẩm:</label>
+                        <textarea class="form-control" id="edit_product_description" name="product_description" required></textarea>
+                    </div>
+                    <div class="form-group">
                         <label for="edit_product_image">Hình Ảnh (nếu muốn thay đổi):</label>
                         <input type="file" class="form-control-file" id="edit_product_image" name="product_image">
                     </div>
@@ -446,11 +491,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
             document.getElementById('productPopup').style.display = 'none';
         }
 
-        function showEditPopup(productId, productName, productPrice, productBrand) {
+        function showEditPopup(productId, productName, productPrice, productBrand, productDescription) {
             document.getElementById('edit_product_id').value = productId;
             document.getElementById('edit_product_name').value = productName;
             document.getElementById('edit_product_price').value = productPrice;
             document.getElementById('edit_product_brand').value = productBrand;
+            document.getElementById('edit_product_description').value = productDescription;
             document.getElementById('editProductPopup').style.display = 'flex';
         }
 
@@ -467,6 +513,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['user_id'])) {
             alert('<?php echo $_SESSION['message']; ?>');
             <?php unset($_SESSION['message']); ?>
         <?php endif; ?>
+
+        // Function to show the correct section based on the URL parameter
+        function toggleSection(section) {
+            const userSection = document.getElementById('user');
+            const productSection = document.getElementById('product');
+            if (section === 'user') {
+                userSection.style.display = 'block';
+                productSection.style.display = 'none';
+            } else {
+                userSection.style.display = 'none';
+                productSection.style.display = 'block';
+            }
+        }
+
+        // Show the product section if the URL has ?section=product
+        window.onload = function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('section') && urlParams.get('section') === 'product') {
+                toggleSection('product');
+            }
+        };
 
         
     </script>

@@ -27,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     mysqli_stmt_close($stmt);
 }
 
+
 // Chuyển hướng về trang quản trị sản phẩm
 header('Location: admin_dashboard.php');
 exit();

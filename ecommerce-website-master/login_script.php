@@ -24,7 +24,7 @@ if ($num == 0) {
 
     // Chuyển hướng dựa trên vai trò
     if ($row['role'] == 'admin') {
-        header('location: admin_dashboard.php'); // Trang quản trị cho admin
+        header('location: ../ecommerce-website-master/controladmin/index.php'); // Trang quản trị cho admin
     } else {
         header('location: products.php'); // Trang sản phẩm cho user
     }
